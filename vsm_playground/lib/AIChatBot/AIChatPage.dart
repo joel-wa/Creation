@@ -29,13 +29,14 @@ class _AIChatPageState extends State<AIChatPage> {
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.89,
-              color: Colors.yellow,
+              color: const Color.fromARGB(255, 239, 246, 255),
+              padding: const EdgeInsets.only(bottom: 10),
               child: ChatRenderer(),
             ),
             Positioned(
               bottom: 0,
               child: Container(
-                color: Colors.white,
+                color: const Color.fromARGB(255, 255, 255, 255),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,

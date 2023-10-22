@@ -55,7 +55,7 @@ def send_ai_query():
     index()
     data = request.get_json()
     print("Posted")
-    time.sleep(10)
+    time.sleep(15)
     ES.send_and_enter(ES,data,XPaths.xpaths['bard_input'],chrome_driver)
     time.sleep(15)
     global response_data

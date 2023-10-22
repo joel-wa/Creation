@@ -20,7 +20,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
   Widget build(BuildContext context) {
     List<int> pv = [];
     List<Widget> wrapperList = [
-      //AIChatPage(),
+      AIChatPage(),
       SAP_OB_categorySelect(
         pageController: pageController,
       ),
