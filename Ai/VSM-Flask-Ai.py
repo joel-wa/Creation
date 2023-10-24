@@ -49,9 +49,10 @@ def run_ai(message):
     )
     return output
 
-app.route('/',methods = ['GET'])
+@app.route('/',methods = ['GET'])
 def ask_server():
-    return jsonify({"response":'Hi from Server'}),201
+    value = 'Hello'
+    return value,201
 
 @app.route('/aiReq',methods = ['GET'])
 def ask_ai():

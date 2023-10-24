@@ -18,3 +18,8 @@ output = replicate.run(
 for item in output:
     # https://replicate.com/meta/llama-2-70b-chat/versions/02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3/api#output-schema
     print(item, end="")
+
+answer = ''
+
+for item in output:
+    answer.ap

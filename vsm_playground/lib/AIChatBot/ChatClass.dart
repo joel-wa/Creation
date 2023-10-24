@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ChatClass {
+  final url = 'http://ec2-3-135-228-10.us-east-2.compute.amazonaws.com:5000/';
   static List<MessageClass> chat = [];
   static bool canSend = true;
   String answer = '';
@@ -26,8 +27,7 @@ class ChatClass {
 
   Future<String> fetchPost() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:5000/aiChat'));
+      final response = await http.get(Uri.parse('${url}aiChat'));
       print(response);
       // return 'hello';
       if (response.statusCode == 201) {
@@ -48,7 +48,7 @@ class ChatClass {
 
   Future<bool> createPost(String body) async {
     final response = await http.post(
-      Uri.parse('http://localhost:5000/aiChat'),
+      Uri.parse('${url}aiChat'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
