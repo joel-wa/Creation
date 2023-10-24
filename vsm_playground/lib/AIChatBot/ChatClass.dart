@@ -1,60 +1,67 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ChatClass {
   static List<MessageClass> chat = [];
+  static bool canSend = true;
+  String answer = '';
 
-  Future<void> userSendMessage(String message) async {
+  Future<void> userSendMessage(
+      String message, ScrollController controller) async {
     chat.add(MessageClass('user', message));
-    bool result = await createPost(message);
-    if (result) {
-      String answer = await fetchPost();
-      chat.add(MessageClass('system', answer));
-    } else {
-      chat.add(MessageClass('system', 'error'));
+    if (canSend == false) {
+      chat.add(MessageClass('system', 'please wait'));
+      return;
     }
+    canSend = false;
+    await createPost(message);
+    controller.position.animateTo(controller.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500), curve: Curves.linear);
+    canSend = true;
+    return;
   }
 
   Future<String> fetchPost() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:5000/'));
-
-      if (response.statusCode == 200) {
+      final response =
+          await http.get(Uri.parse('http://localhost:5000/aiChat'));
+      print(response);
+      // return 'hello';
+      if (response.statusCode == 201) {
         // Successful response
-        print('Response data: ${response.body}');
-        return response.body;
+        // print('Response data: ${response.body}');
+        answer = response.body;
+        return answer;
       } else {
         // Handle the error
         print('Request failed with status: ${response.statusCode}');
         return 'Error';
       }
     } catch (e) {
-      print('Error: $e');
+      print(' Fetch Error: $e');
       return 'Error';
     }
   }
 
   Future<bool> createPost(String body) async {
-    try {
-      final response = await http.post(
-        Uri.parse('http://localhost:5000/ai'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(body), // Wrap body in an object
-      );
+    final response = await http.post(
+      Uri.parse('http://localhost:5000/aiChat'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body),
+    );
 
-      if (response.statusCode == 201) {
-        final parsedData = json.decode(response.body);
-        print('Post created with ID: ${parsedData['id']}');
-        return true;
-      } else {
-        print('Post Request failed with status: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Create Post Error: $e');
+    if (response.statusCode == 201) {
+      final parsedData = response.body;
+      chat.add(MessageClass('system', parsedData));
+
+      return true;
+    } else {
+      print('Request failed with status: ${response.statusCode}');
       return false;
     }
   }
@@ -62,7 +69,7 @@ class ChatClass {
 
 Future<bool> createPost(String body) async {
   final response = await http.post(
-    Uri.parse('http://localhost:5000/ai'),
+    Uri.parse('http://localhost:5000/ai_chat'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

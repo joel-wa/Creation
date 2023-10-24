@@ -1,17 +1,20 @@
-from llama_cpp import Llama
+import replicate
 import os
-import os.path
 
-dir = r"C:/Users/RanVic/Downloads/llama-2-7b-chat.ggmlv3.q8_0.bin"
+replicate_api_token = os.getenv("REPLICATE_API_TOKEN")
+# replicate_api_token: str = "r8_WYxUzEqqzbgVUgaPcBI1XIIOBcuGseA1wakWQ"
 
-LLM = Llama(model_path= "Ai\LLama\consolidated.00.pth")
+if replicate_api_token is None:
+    raise ValueError("REPLICATE_API_TOKEN environment variable not set")
 
-# create a text prompt
-prompt = "Q: What are the names of the days of the week? A:"
 
-# generate a response (takes several seconds)
-output = LLM(prompt)
-
-# display the response
-print(output["choices"][0]["text"])
-
+output = replicate.run(
+    "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
+    input={"prompt":"Which is the largest country in the world"},
+    api_token = replicate_api_token
+)
+# The meta/llama-2-70b-chat model can stream output as it's running.
+# The predict method returns an iterator, and you can iterate over that output.
+for item in output:
+    # https://replicate.com/meta/llama-2-70b-chat/versions/02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3/api#output-schema
+    print(item, end="")

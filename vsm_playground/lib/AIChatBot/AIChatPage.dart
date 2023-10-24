@@ -11,6 +11,7 @@ class AIChatPage extends StatefulWidget {
 
 class _AIChatPageState extends State<AIChatPage> {
   TextEditingController textEditingController = TextEditingController();
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     String targetChar = "\n";
@@ -31,7 +32,9 @@ class _AIChatPageState extends State<AIChatPage> {
               height: MediaQuery.of(context).size.height * 0.89,
               color: const Color.fromARGB(255, 239, 246, 255),
               padding: const EdgeInsets.only(bottom: 10),
-              child: ChatRenderer(),
+              child: ChatRenderer(
+                controller: controller,
+              ),
             ),
             Positioned(
               bottom: 0,
@@ -77,13 +80,13 @@ class _AIChatPageState extends State<AIChatPage> {
                       height: 70,
                       width: 70,
                       child: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (textEditingController.value.text == '') return;
-                            setState(() {
-                              ChatClass().userSendMessage(
-                                  textEditingController.value.text);
-                              textEditingController.clear();
-                            });
+                            await ChatClass().userSendMessage(
+                                textEditingController.value.text, controller);
+                            textEditingController.clear();
+
+                            setState(() {});
                           },
                           icon: const Icon(Icons.send)),
                     )

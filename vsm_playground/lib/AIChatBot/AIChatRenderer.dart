@@ -3,14 +3,16 @@ import 'package:vsm_playground/AIChatBot/AIChatBubble.dart';
 import 'package:vsm_playground/AIChatBot/ChatClass.dart';
 
 class ChatRenderer extends StatefulWidget {
-  const ChatRenderer({super.key});
+  ScrollController controller;
+  ChatRenderer({super.key, required this.controller});
 
   @override
-  State<ChatRenderer> createState() => _ChatRendererState();
+  State<ChatRenderer> createState() => _ChatRendererState(controller);
 }
 
 class _ChatRendererState extends State<ChatRenderer> {
-  ScrollController controller = ScrollController();
+  ScrollController controller;
+  _ChatRendererState(this.controller);
   @override
   Widget build(BuildContext context) {
     // return f_b(controller);
@@ -18,8 +20,6 @@ class _ChatRendererState extends State<ChatRenderer> {
       controller: controller,
       itemCount: ChatClass.chat.length,
       itemBuilder: (BuildContext context, index) {
-        controller.position.animateTo(controller.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 500), curve: Curves.linear);
         return AIChatBubble(messageClass: ChatClass.chat[index]);
       },
     );

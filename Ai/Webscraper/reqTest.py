@@ -1,5 +1,6 @@
 import time
 import requests
+import json
 
 # Define the API endpoint
 # api_url = "http://localhost:5000/books"  # Update the URL if necessary
@@ -29,7 +30,7 @@ import requests
 #     print(f"Failed to retrieve books. Status code: {response.status_code}")
 
 q = input()
-ai_url = 'http://localhost:5000/ai'
+ai_url = 'http://localhost:5000/ai_chat'
 question = q
 
 ai_response = requests.post(ai_url, json=question)
@@ -39,6 +40,6 @@ if ai_response.status_code == 201:
 else:
     print(f"Failed to add book. Status code: {ai_response.status_code}")
 
-response = requests.get(ai_url)
+response =ai_response.content
 
-print(response.json)
+print(response)
