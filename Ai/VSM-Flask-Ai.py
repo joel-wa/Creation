@@ -40,6 +40,7 @@ def validate_input(input:str):
     else:
         return False
 
+
 def run_ai(message):
     output = replicate.run(
         "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
@@ -47,6 +48,10 @@ def run_ai(message):
         api_token =os.environ['REPLICATE_API_TOKEN']
     )
     return output
+
+app.route('/',methods = ['GET'])
+def ask_server():
+    return jsonify({"response":'Hi from Server'}),201
 
 @app.route('/aiReq',methods = ['GET'])
 def ask_ai():
