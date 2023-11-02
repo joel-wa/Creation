@@ -1,3 +1,7 @@
+import json
+import re
+
+
 class AIFunctions:
     
     def __init__(self) -> None:
@@ -16,9 +20,9 @@ class AIFunctions:
     }
   },
   
-    {
+ {
     "name":"changeTheme",
-    "description":"""change the theme colors of the shop or app based on: The Primary Color is used as the default background color for all sections in the Shop.
+        "description":"""change the theme colors of the shop or app based on: The Primary Color is used as the default background color for all sections in the Shop.
     The Secondary Color is used as the background color for the sticker on top of carousel products to show discounts. 
     Secondary 2 is used for show the discount percentage of prices of products, Active Navigation Icon in Bottom navigation Bar.
     The Accent Color is used for Call-To-Action buttons like the active state of the wishlist icon, "Add to Cart" button, and "Confirm Order" Button.
@@ -30,11 +34,47 @@ class AIFunctions:
                 "new_color":{
                     "type":"string",
                     "description":"corresponding color in rgb format, eg. for white is (255,255,255)"
+                },
+                "theme_key":{
+                    "type":"string",
+                    "enum":["primary","secondary","accent","secondary2","neutral","textColor"]
                 }
             }
         },
-    "required":["new_color"]
+        "required":["new_color","theme_key"]
     },
 
 
     ]
+
+    def navFunc(json_data):
+        # Parse the JSON data to extract the 'page' value
+        data = json.loads(json_data)
+        page = data.get('page', '')
+        message = f'Tap the Button to go to {page}: [nav:{page}]'
+        
+
+    def changeThemeFunc(json_data):
+        # Parse the JSON data to extract theme_key and new_color
+        data = json.loads(json_data)
+        new_color = data.get('new_color', '')
+        theme_key = data.get('theme_key', '')
+
+        # Use regular expression to extract the RGB values from the new_color string
+        rgb_values = re.findall(r'(\d+), (\d+), (\d+)', new_color)
+
+        # Convert and add the RGB values to the list
+        R,G,B = 0,0,0
+        for r, g, b in rgb_values:
+            R,G,B = int(r),int(g),int(b)
+        
+        message = f'You can change your {theme_key} by tapping on the below button [sm:changeTheme:{R},{G},{B}]'
+        print(f"\n\n\n {message} \n\n\n")
+
+    def modifySectionFunc(json_data):
+        # Parse the JSON data to extract section_preset and section_index
+        data = json.loads(json_data)
+        section_preset = data.get('section_preset', '')
+        section_index = data.get('section_index', -1)  # Default value if not present or not an integer
+        message = f'Tap the Button below to change that section to {section_preset}. [sm:changeSection:{section_index}:{section_preset}]'
+        print(f"\n\n\n {message} \n\n\n")

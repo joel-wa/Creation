@@ -1,9 +1,74 @@
+import json
+import re
 from flask import Flask, request, jsonify
 import replicate
 from flask_cors import CORS
 import openai
 
-openai.api_key = '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'
+openai.api_key = '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'
+
+#Utility Functions
+def navFunc(json_data):
+        # Parse the JSON data to extract the 'page' value
+        data = json.loads(json_data)
+        page = data.get('page', '')
+        message = f'Tap the Button to go to {page}: [nav:{page}]'
+        return message
+    
+
+def changeThemeFunc(json_data):
+    # Parse the JSON data to extract theme_key and new_color
+    data = json.loads(json_data)
+    new_color = data.get('new_color', '')
+    theme_key = data.get('theme_key', '')
+
+    # Use regular expression to extract the RGB values from the new_color string
+    rgb_values = re.findall(r'(\d+), (\d+), (\d+)', new_color)
+
+    # Convert and add the RGB values to the list
+    R,G,B = 0,0,0
+    for r, g, b in rgb_values:
+        R,G,B = int(r),int(g),int(b)
+    
+    message = f'You can change your {theme_key} by tapping on the below button [sm:changeTheme:{R},{G},{B}]'
+    print(f"\n\n\n {message} \n\n\n")
+    return message
+
+def modifySectionFunc(json_data):
+    # Parse the JSON data to extract section_preset and section_index
+    data = json.loads(json_data)
+    section_preset = data.get('section_preset', '')
+    section_index = data.get('section_index', -1)  # Default value if not present or not an integer
+    message = f'Tap the Button below to change that section to {section_preset}. [sm:changeSection:{section_index}:{section_preset}]'
+    print(f"\n\n\n {message} \n\n\n")
+    return message
+
+
+def parseAIResponse(response_message):
+    if response_message.get("function_call"):
+        function_name = response_message['function_call']['name']
+        # print(function_name)
+        #Save all the various function's arguments
+        function_args = response_message["function_call"]["arguments"]
+        # print("start")
+        # print(function_args)
+        # print("\n end")
+
+        # match(function_name):
+        if function_name == 'navigation':
+            value = navFunc(function_args)
+            return value
+        elif function_name == 'changeTheme':
+            print('doing')
+            value = changeThemeFunc(function_args)
+            return value
+        elif  function_name == 'modify_section':
+            value = modifySectionFunc(function_args)
+            return value
+    else:
+        message = response_message['content']
+        return message
+
 
 
 def get_ai(user_prompt):
@@ -40,8 +105,7 @@ def get_ai(user_prompt):
         "required":["new_color"]
     },
 
-
-    {
+  {
         "name":"modify_section",
         "description":"for changing one of the four sections of the layout structure of a user's layout or homepage",
         "parameters":{
@@ -49,6 +113,7 @@ def get_ai(user_prompt):
             "properties":{
                 "section_preset":{
                     "type":"string",
+                    "description":"The type of preset to change the section to",
                     "enum":["Carousel","Grid","Horizonatal"]
                 },
                 "section_index":{
@@ -67,7 +132,7 @@ def get_ai(user_prompt):
         functions=functions,
         function_call="auto",  # auto is default, but we'll be explicit
     )
-    response_message = response["choices"][0]["message"]
+    response_message = parseAIResponse(response["choices"][0]["message"])
     print(response)
     return response_message
 
@@ -89,4 +154,4 @@ def chat_ai():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)

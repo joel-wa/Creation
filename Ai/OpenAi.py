@@ -1,12 +1,12 @@
 import openai
 import json
-
+from AI_functions import AIFunctions as af
 
 
 import os
 
-os.environ['OPEN_AI_KEY'] = "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"
-openai.api_key = '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'
+# os.environ['OPEN_AI_KEY'] = "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"
+openai.api_key = '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'
 
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
@@ -21,7 +21,7 @@ def get_current_weather(location, unit="fahrenheit"):
     return json.dumps(weather_info)
 
 def run_conversation():
-    user_prompt = "which theme color is responsible for my CTA buttons"
+    user_prompt = "change my CTA button color to light blue"
     # Step 1: send the conversation and available functions to GPT
     messages = [{"role":"system","content":"You are a mobile app assistant chat bot"},{"role": "user", "content": user_prompt}]
     functions = [
@@ -37,35 +37,41 @@ def run_conversation():
     }
   },
   
-  {
+ {
     "name":"changeTheme",
-    "description":"""change the theme colors of the shop or app based on: The Primary Color is used as the default background color for all sections in the Shop.
-The Secondary Color is used as the background color for the sticker on top of carousel products to show discounts. 
-Secondary 2 is used for show the discount percentage of prices of products, Active Navigation Icon in Bottom navigation Bar.
-The Accent Color is used for Call-To-Action buttons like the active state of the wishlist icon, "Add to Cart" button, and "Confirm Order" Button.
-The Neutral Color is used to for inactive Icons in the Navigation bar, prices before discounts, dividers, etc.
-The Text Color is used for the default text colors of titles of sections and since sections have a default background color of Primary Color, it should be in contrast with the primary color for easier readability.""",
- "parameters":{
-        "type": "object",
-        "properties":{
-            "new_color":{
-                "type":"string",
-                "description":"corresponding color in rgb format, eg. for white is (255,255,255)"
+        "description":"""change the theme colors of the shop or app based on: The Primary Color is used as the default background color for all sections in the Shop.
+    The Secondary Color is used as the background color for the sticker on top of carousel products to show discounts. 
+    Secondary 2 is used for show the discount percentage of prices of products, Active Navigation Icon in Bottom navigation Bar.
+    The Accent Color is used for Call-To-Action buttons like the active state of the wishlist icon, "Add to Cart" button, and "Confirm Order" Button.
+    The Neutral Color is used to for inactive Icons in the Navigation bar, prices before discounts, dividers, etc.
+    The Text Color is used for the default text colors of titles of sections and since sections have a default background color of Primary Color, it should be in contrast with the primary color for easier readability.""",
+    "parameters":{
+            "type": "object",
+            "properties":{
+                "new_color":{
+                    "type":"string",
+                    "description":"corresponding color in rgb format, eg. for white is (255,255,255)"
+                },
+                "theme_key":{
+                    "type":"string",
+                    "enum":["primary","secondary","accent","secondary2","neutral","textColor"]
+                }
             }
-        }
+        },
+        "required":["new_color","theme_key"]
     },
-    "required":["new_color"]
-},
+
 
 
 {
     "name":"modify_section",
-    "description":"for changing one of the four sections of the layout structure of a user's layout or homepage",
+    "description":"for changing the layout structure of a user's layout or homepage",
     "parameters":{
         "type": "object",
         "properties":{
             "section_preset":{
                 "type":"string",
+                "description":"The type of preset to change the section to",
                 "enum":["Carousel","Grid","Horizonatal"]
             },
             "section_index":{
@@ -77,26 +83,6 @@ The Text Color is used for the default text colors of titles of sections and sin
     "required":["section_preset","section_index"]
 },
 
-
-
-# {
-#     "name":"customer_support",
-#     "description":"for feedback or complaints. eg, very good or the application has bugs",
-#     "parameters":{
-#         "type": "object",
-#         "properties":{
-#             "message":{
-#                 "type":"string",
-#                 "description":"portion of the user prompt that lead to the function call"
-#             }
-#         },
-        
-#     },
-#     "required":["message"]
-# },
-
-
-
   ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo-0613",
@@ -104,8 +90,10 @@ The Text Color is used for the default text colors of titles of sections and sin
         functions=functions,
         function_call="auto",  # auto is default, but we'll be explicit
     )
+    # print(response["choices"][0]["message"])
     response_message = response["choices"][0]["message"]
-    return response
+    print(response_message)
+    return parseAIResponse(response_message)
 
     # Step 2: check if GPT wanted to call a function
     if response_message.get("function_call"):
@@ -137,4 +125,30 @@ The Text Color is used for the default text colors of titles of sections and sin
         )  # get a new response from GPT where it can see the function response
         return second_response
 
-print(run_conversation())
+def parseAIResponse(response_message):
+    if response_message.get("function_call"):
+        function_name = response_message['function_call']['name']
+        print(function_name)
+        #Save all the various function's arguments
+        function_args = response_message["function_call"]["arguments"]
+        print("start")
+        print(function_args)
+        print("\n end")
+
+        match(function_name):
+            case 'navigation':
+                af.navFunc(function_args)
+                return
+            case 'changeTheme':
+                print('doing')
+                value = af.changeThemeFunc(function_args)
+                return value
+            case 'modify_section':
+                af.modifySectionFunc(function_args)
+                return
+
+
+
+
+run_conversation()
+# print()

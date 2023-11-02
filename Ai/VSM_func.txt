@@ -25,10 +25,14 @@ The Text Color is used for the default text colors of titles of sections and sin
             "new_color":{
                 "type":"string",
                 "description":"corresponding color in rgb format, eg. for white is (255,255,255)"
+            },
+            "theme_key":{
+                "type":"string",
+                "enum":["primary","secondary","accent","secondary2","neutral","textColor"]
             }
         }
     },
-    "required":["new_color"]
+    "required":["new_color","theme_key"]
 },
 
 {
@@ -39,6 +43,7 @@ The Text Color is used for the default text colors of titles of sections and sin
         "properties":{
             "section_preset":{
                 "type":"string",
+                "description":"The type of preset to change the section to",
                 "enum":["Carousel","Grid","Horizonatal"]
             },
             "section_index":{
