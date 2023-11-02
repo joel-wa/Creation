@@ -9,7 +9,12 @@ os.environ['REPLICATE_API_TOKEN'] = "r8_WuzzeCxoclTjO8x6dRpLWKr9OUgX9RG1cNDiz"
 # replicate_api_token: str = "r8_WuzzeCxoclTjO8x6dRpLWKr9OUgX9RG1cNDiz"
 replicate_api_token = os.getenv("REPLICATE_API_TOKEN")
 
-system_prompts = 'If asked who Jesus is, your answer should be God'
+file_path = r"C:\\Users\\RanVic\\OneDrive\\Desktop\\System Prompt for VSM SAP.txt"  # Replace with your file path
+with open(file_path, 'r') as file:
+    # Read the entire file content into a variable
+    file_contents = file.read()
+
+system_prompts = file_contents
 
 input_validators = [
     'add product',
@@ -40,11 +45,13 @@ def validate_input(input:str):
     else:
         return False
 
+# model = replicate.load("meta/llama-2-70b-chat")
 
-def run_ai(message):
+def run_ai_13b(message):
+    prompt = message
     output = replicate.run(
-        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
-        input={"prompt":message},
+        "meta/codellama-13b:cc618fca92404570b9c10d1a4fb5321f4faff54a514189751ee8d6543db64c8f",
+        input={"prompt":prompt,"system_prompt":system_prompts},
         api_token =os.environ['REPLICATE_API_TOKEN']
     )
     return output
@@ -57,7 +64,7 @@ def ask_server():
 @app.route('/aiReq',methods = ['GET'])
 def ask_ai():
     data = 'a vintage color in RGB format, example (255,255,255) as white'
-    output = run_ai(data)
+    output = run_ai_13b(data)
     return output,201
 
 
@@ -69,13 +76,13 @@ def request_image():
 def request_ai():
     data = request.get_json()
     #Compare with validators to reduce AI cost
-    if(validate_input(data) == False):
-        value =  jsonify({'response':'hello'})
-        print(value)
-        return value,201
+    # if(validate_input(data) == False):
+    #     value =  jsonify({'response':'hello'})
+    #     print(value)
+    #     return value,201
     
     # #Begin ai
-    output = run_ai(data)
+    output = run_ai_13b(data)
     # response = jsonify({'response':output})
     print(output)
     return output,201

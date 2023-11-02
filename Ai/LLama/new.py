@@ -4,7 +4,7 @@ from langchain.chains import LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
-MODEL_PATH ="C:\\Users\\RanVic\\Downloads\\llama-2-7b.Q5_0.gguf"
+MODEL_PATH ="C:\\Users\\RanVic\\Downloads\\llama-2-13b-chat.Q4_K_M.gguf"
 
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 

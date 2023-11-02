@@ -30,11 +30,11 @@ import json
 #     print(f"Failed to retrieve books. Status code: {response.status_code}")
 
 q = input()
-ai_url = 'http://localhost:5000/ai_chat'
+ai_url = 'http://localhost:5000/aiChat'
 question = q
 
 ai_response = requests.post(ai_url, json=question)
-
+ 
 if ai_response.status_code == 201:
     print("Question sent!")
 else:

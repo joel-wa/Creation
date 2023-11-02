@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vsm_playground/AIChatBot/ChatClass.dart';
+import 'package:vsm_playground/AIChatBot/SystemChatBubble.dart';
 
 class AIChatBubble extends StatelessWidget {
   MessageClass messageClass;
@@ -15,7 +16,7 @@ class AIChatBubble extends StatelessWidget {
             margin: EdgeInsets.only(
                 left: (margin_value <= 0 ||
                         margin_value > MediaQuery.of(context).size.width * 0.8)
-                    ? MediaQuery.of(context).size.width * 0.4
+                    ? MediaQuery.of(context).size.width * 0.3
                     : margin_value,
                 right: 10,
                 top: 10,
@@ -27,22 +28,7 @@ class AIChatBubble extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Text(messageClass.message),
           )
-        : Container(
-            padding: const EdgeInsets.all(20),
-            margin: EdgeInsets.only(
-                right: (margin_value <= 0 ||
-                        margin_value > MediaQuery.of(context).size.width * 0.8)
-                    ? MediaQuery.of(context).size.width * 0.4
-                    : margin_value,
-                left: 10,
-                top: 10,
-                bottom: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            alignment: Alignment.topRight,
-            child: Text(messageClass.message),
-          );
+        : SystemChatBubble(
+            margin_value: margin_value, message: messageClass.message);
   }
 }

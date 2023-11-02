@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vsm_playground/ImageSectionTesting/wrapper.dart';
 import 'package:vsm_playground/SAP%20Onbaording/CategorySelection.dart';
 import 'package:vsm_playground/SAP%20Onbaording/OnBoardingWrapper.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const OnboardingWrapper(),
+      home: const ImageWrapper(),
     );
   }
 }

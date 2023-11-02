@@ -30,7 +30,7 @@ class _AIChatPageState extends State<AIChatPage> {
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.89,
-              color: const Color.fromARGB(255, 239, 246, 255),
+              color: Color.fromARGB(255, 210, 170, 215),
               padding: const EdgeInsets.only(bottom: 10),
               child: ChatRenderer(
                 controller: controller,
@@ -44,12 +44,27 @@ class _AIChatPageState extends State<AIChatPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    Container(
+                      height: 40,
+                      width: 40,
+                      margin: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 212, 212, 212),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.camera_alt,
+                          size: 30,
+                        ),
+                      ),
+                    ),
                     //TextField
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         height: textFieldHeight,
-                        width: MediaQuery.of(context).size.width * 0.8,
+                        width: MediaQuery.of(context).size.width * 0.65,
                         // padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           border: Border.all(width: 0.5, color: Colors.grey),
@@ -73,7 +88,7 @@ class _AIChatPageState extends State<AIChatPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    // const SizedBox(width: 5),
 
                     //
                     Container(
@@ -88,7 +103,7 @@ class _AIChatPageState extends State<AIChatPage> {
 
                             setState(() {});
                           },
-                          icon: const Icon(Icons.send)),
+                          icon: const Icon(Icons.send, size: 30)),
                     )
                   ],
                 ),

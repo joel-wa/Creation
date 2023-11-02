@@ -5,8 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ChatClass {
-  final url = 'http://ec2-3-135-228-10.us-east-2.compute.amazonaws.com:5000/';
-  static List<MessageClass> chat = [];
+  final url = 'http://localhost:5000/';
+  //  'http://ec2-3-135-228-10.us-east-2.compute.amazonaws.com:5000/';
+  static List<MessageClass> chat = [
+    MessageClass('system', """Welcome to VSM Mobile Assistant!
+
+I'm here to help you manage your mobile app. Tell me what you need, and I'll provide the help to get it done. How can I assist you today?"""),
+    MessageClass('system',
+        """Try using one of the links to navigate the app<nav:Dashboard> <nav:Orders> """),
+  ];
   static bool canSend = true;
   String answer = '';
 
@@ -47,6 +54,13 @@ class ChatClass {
   }
 
   Future<bool> createPost(String body) async {
+//     chat.add(MessageClass('system', """
+// Hi you can go to the Dashboard by tapping the link below:
+//   <nav:Dashboard>
+//   <nav:AddProductPage>
+// // Feel free to ask any other questions
+// """));
+//     return true;
     final response = await http.post(
       Uri.parse('${url}aiChat'),
       headers: <String, String>{
