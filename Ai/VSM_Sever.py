@@ -80,8 +80,8 @@ CORS(app)
 
 @app.route('/aiChat',methods = ['POST','GET'])
 def chat_ai():
-    # data = request.get_json()
-    output = get_ai("which page can i add a new product")
+    data = request.get_json()
+    output = get_ai(data)
     # response = jsonify({'response':output})
     print(output)
     return output,201
