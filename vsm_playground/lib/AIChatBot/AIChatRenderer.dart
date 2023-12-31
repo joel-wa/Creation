@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vsm_playground/AIChatBot/AIChatBubble.dart';
+// import 'package:vsm_playground/AIChatBot/AIChatBubble.dart';
 import 'package:vsm_playground/AIChatBot/ChatClass.dart';
+
+import 'AIChatBubble-DESKTOP-DC1684O.dart';
 
 class ChatRenderer extends StatefulWidget {
   ScrollController controller;

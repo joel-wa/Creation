@@ -28,6 +28,10 @@ The Text Color is used for the default text colors of titles of sections and sin
             },
             "theme_key":{
                 "type":"string",
+<<<<<<< Updated upstream
+=======
+                "description":"The specific theme color being changed",
+>>>>>>> Stashed changes
                 "enum":["primary","secondary","accent","secondary2","neutral","textColor"]
             }
         }
@@ -70,6 +74,23 @@ The Text Color is used for the default text colors of titles of sections and sin
     "description":"add a product to inventory",
     "parameters":{
         "type": "object",
+<<<<<<< Updated upstream
+=======
+        'properties':{
+            'name':{
+                'type':'string',
+                'description':'the name of the product',
+            },
+            'price':{
+                'type':'string',
+                'description':'product price',
+            },
+            'description':{
+                 'type':'string',
+                'description':'product description',
+            },
+        }
+>>>>>>> Stashed changes
     },
     "required":[]
 },

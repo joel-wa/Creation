@@ -29,8 +29,13 @@ import json
 # else:
 #     print(f"Failed to retrieve books. Status code: {response.status_code}")
 
+print('ask \n\n')
 q = input()
+<<<<<<< Updated upstream:Ai/Webscraper/reqTest.py
 ai_url = 'http://localhost:5000/aiChat'
+=======
+ai_url = 'http://localhost:5000/webChat'
+>>>>>>> Stashed changes:Ai/Webscraper/reqTest-DESKTOP-DC1684O.py
 question = q
 
 ai_response = requests.post(ai_url, json=question)
@@ -38,7 +43,7 @@ ai_response = requests.post(ai_url, json=question)
 if ai_response.status_code == 201:
     print("Question sent!")
 else:
-    print(f"Failed to add book. Status code: {ai_response.status_code}")
+    print(f"Failed. Status code: {ai_response.status_code}")
 
 response =ai_response.content
 

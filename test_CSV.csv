@@ -1,0 +1,3 @@
+name,description,parameters
+modify_section,for changing the layout structure of a user's homepage,"{'type': 'object', 'properties': {'section_preset': {'type': 'string', 'description': 'the type of preset to change the section to', 'enum': ['Carousel', 'Grid', 'Horizontal']}, 'section_index': {'type': 'integer', 'description': 'the index of the section being changed'}}}"
+startChain,function to call if there is a need for a follow-up question,"{'type': 'object', 'properties': {'question': {'type': 'string', 'description': 'the follow up question you want to ask'}}}"

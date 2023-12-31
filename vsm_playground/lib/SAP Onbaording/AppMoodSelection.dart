@@ -35,7 +35,7 @@ class _SAP_OB_appMoodSelectionState extends State<SAP_OB_appMoodSelection> {
           children: [
             SizedBox(width: MediaQuery.of(context).size.width * 0.25),
             const Text(
-              'What is the feel?',
+              'Choose your theme?',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,

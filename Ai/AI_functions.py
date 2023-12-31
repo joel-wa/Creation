@@ -51,7 +51,13 @@ class AIFunctions:
         # Parse the JSON data to extract the 'page' value
         data = json.loads(json_data)
         page = data.get('page', '')
+<<<<<<< Updated upstream
         message = f'Tap the Button to go to {page}: [nav:{page}]'
+=======
+        message = f'Tap the Button to go to {page}: [nav:{page}] \n'
+        # print(message)
+        return message
+>>>>>>> Stashed changes
         
 
     def changeThemeFunc(json_data):
@@ -59,6 +65,10 @@ class AIFunctions:
         data = json.loads(json_data)
         new_color = data.get('new_color', '')
         theme_key = data.get('theme_key', '')
+<<<<<<< Updated upstream
+=======
+        color_name = data.get('color_name','')
+>>>>>>> Stashed changes
 
         # Use regular expression to extract the RGB values from the new_color string
         rgb_values = re.findall(r'(\d+), (\d+), (\d+)', new_color)
@@ -68,13 +78,73 @@ class AIFunctions:
         for r, g, b in rgb_values:
             R,G,B = int(r),int(g),int(b)
         
+<<<<<<< Updated upstream
         message = f'You can change your {theme_key} by tapping on the below button [sm:changeTheme:{R},{G},{B}]'
         print(f"\n\n\n {message} \n\n\n")
+=======
+        message = f'You can change your {theme_key} to {color_name} by tapping on the below button [sm:changeTheme:{theme_key}:{R},{G},{B}] \n'
+        # print(f"\n\n\n {message} \n\n\n")
+        return message
+>>>>>>> Stashed changes
 
     def modifySectionFunc(json_data):
         # Parse the JSON data to extract section_preset and section_index
         data = json.loads(json_data)
         section_preset = data.get('section_preset', '')
         section_index = data.get('section_index', -1)  # Default value if not present or not an integer
+<<<<<<< Updated upstream
         message = f'Tap the Button below to change that section to {section_preset}. [sm:changeSection:{section_index}:{section_preset}]'
         print(f"\n\n\n {message} \n\n\n")
+=======
+        message = f'Tap the Button below to change that section to {section_preset}. [sm:changeSection:{section_index}:{section_preset}] \n'
+        # print(f"\n\n\n {message} \n\n\n")
+        return message
+    
+    def mchainFunc(json_data):
+        # Parse the JSON data to extract section_preset and section_index
+        data = json.loads(json_data)
+        section_preset = data.get('chain', '')
+        # section_index = data.get('section_index', -1)  # Default value if not present or not an integer
+        message = f'Begin Chaining \n'
+        # print(f"\n\n\n {message} \n\n\n")
+        return message
+
+    def makeShopFunc(json_data):
+        data = json.loads(json_data)
+        shopName = data.get('shopName','')
+        shopCat = data.get('shopCat','')
+        s1 = data.get('s1','')
+        s2 = data.get('s2','')
+        s3 = data.get('s3','')
+        s4 = data.get('s4','')
+        primaryColor = data.get('primaryColor','')
+        secondaryColor = data.get('secondaryColor','')
+        secondary2Color = data.get('secondary2','')
+        accentColor = data.get('accentColor','')
+        textColor = data.get('textColor','')
+        neutralColor = data.get('neutralColor','')
+
+        val = f"{shopName},{shopCat},{s1},{s2},{s3},{s4},{primaryColor},{secondaryColor},{accentColor},{neutralColor},{textColor}"
+
+
+        message = f"""
+Shop Name: {shopName}
+Category: {shopCat}
+
+s1: {s1}
+s2: {s2}
+s3: {s3}
+s4: {s4}
+
+primary: {primaryColor}
+secondary: {secondaryColor}
+secondary2: {secondary2Color}
+accent: {accentColor}
+neutral: {neutralColor}
+text Color: {textColor}
+"""
+        
+
+        return message
+
+>>>>>>> Stashed changes

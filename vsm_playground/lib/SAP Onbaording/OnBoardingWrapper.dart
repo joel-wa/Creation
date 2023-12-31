@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../AIChatBot/AIChatPage.dart';
+// import '../AIChatBot/AIChatPage.dart';
 import 'AppMoodSelection.dart';
 import 'CategorySelection.dart';
 import 'ShopDetailsSelection.dart';
@@ -20,7 +20,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
   Widget build(BuildContext context) {
     List<int> pv = [];
     List<Widget> wrapperList = [
-      AIChatPage(),
+      // AIChatPage(),
       SAP_OB_categorySelect(
         pageController: pageController,
       ),
@@ -30,7 +30,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
       SAP_OB_shopDetails(
         pageController: pageController,
       ),
-      AIChatPage(),
+      // AIChatPage(),
     ];
     return Provider(create: (context) {
       pv;
