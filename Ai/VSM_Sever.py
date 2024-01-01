@@ -5,12 +5,7 @@ import replicate
 from flask_cors import CORS
 import openai
 
-<<<<<<< Updated upstream
-openai.api_key = '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'
-=======
-openai.api_key = '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'
->>>>>>> Stashed changes
-
+openai.api_key = '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'
 #Utility Functions
 def navFunc(json_data):
         # Parse the JSON data to extract the 'page' value
@@ -34,11 +29,7 @@ def changeThemeFunc(json_data):
     for r, g, b in rgb_values:
         R,G,B = int(r),int(g),int(b)
     
-<<<<<<< Updated upstream
-    message = f'You can change your {theme_key} by tapping on the below button [sm:changeTheme:{R},{G},{B}]'
-=======
     message = f'You can change your {theme_key} by tapping on the below button [sm:changeTheme:{theme_key}:{R},{G},{B}]'
->>>>>>> Stashed changes
     print(f"\n\n\n {message} \n\n\n")
     return message
 
@@ -50,6 +41,30 @@ def modifySectionFunc(json_data):
     message = f'Tap the Button below to change that section to {section_preset}. [sm:changeSection:{section_index}:{section_preset}]'
     print(f"\n\n\n {message} \n\n\n")
     return message
+
+def makeShopFunc(json_data):
+        data = json.loads(json_data)
+        shopName = data.get('shopName','')
+        shopCat = data.get('shopCat','')
+        s1 = data.get('s1','')
+        s2 = data.get('s2','')
+        s3 = data.get('s3','')
+        s4 = data.get('s4','')
+        primaryColor = data.get('primaryColor','')
+        secondaryColor = data.get('secondaryColor','')
+        secondary2Color = data.get('secondary2','')
+        accentColor = data.get('accentColor','')
+        textColor = data.get('textColor','')
+        neutralColor = data.get('neutralColor','')
+
+        val = f"{shopName},{shopCat},{s1},{s2},{s3},{s4},{primaryColor},{secondaryColor},{accentColor},{neutralColor},{textColor}"
+
+
+        message = f"Shop Name: {shopName},Category: {shopCat},s1: {s1},s2: {s2},s3: {s3},s4: {s4},primary: {primaryColor},secondary: {secondaryColor},secondary2: {secondary2Color},accent: {accentColor},neutral: {neutralColor},text Color: {textColor},"
+        
+
+        return message
+
 
 
 def parseAIResponse(response_message):
@@ -73,6 +88,9 @@ def parseAIResponse(response_message):
         elif  function_name == 'modify_section':
             value = modifySectionFunc(function_args)
             return value
+        elif 'makeShop':
+            value = makeShopFunc(function_args)
+            return value
     else:
         message = response_message['content']
         return message
@@ -87,38 +105,14 @@ def get_ai(user_prompt):
     "parameters":{
         "type": "object",
         "properties":{
-<<<<<<< Updated upstream
-            "page":{"type":"string","description":"""The page a user wants to visit based on the descriptions: Dashboard: Gives access to Inventory Page (\"Inventory\"), Orders Page (\"Orders\"), and Shop Appearance Page (\"Shop Appearance\") in the form of Cards.Shop Orders: This allows one to manage new, completed, and historical orders.Inventory: This allows one to view, add/create (Create New Product Page), edit(Edit Product Page), or delete products from their Shop.Edit Product Page: Accessible only by selecting the product one wants to edit from the Inventory, and allows one to change the details of that product.Create New Product Page: This allows one to create and add a new product to their Inventory.Shop Appearance: Gives access to Shop Interface Edit Page, Shop Details Page, Shop Colors Page, Shop Filters Page.Shop Details Page: This allows one to set their Shop\'s banner image, logo image, shop name, and shop contact number. Select the \"save changes\" button below to save changes made.Shop Interface Edit Page: This page allows one to edit and manage the various sections of their shop\'s home page.Shop Colors Page: This page allows one to change their shop\'s Theme Colors.Shop Filters Page: This page allows one to create Filters for their shops."""},
-=======
             "page":{"type":"string",
                     "description":"""The page a user wants to visit based on the descriptions: Dashboard: Gives access to Inventory Page (\"Inventory\"), Orders Page (\"Orders\"), and Shop Appearance Page (\"Shop Appearance\") in the form of Cards.Shop Orders: This allows one to manage new, completed, and historical orders.Inventory: This allows one to view, add/create (Create New Product Page), edit(Edit Product Page), or delete products from their Shop.Edit Product Page: Accessible only by selecting the product one wants to edit from the Inventory, and allows one to change the details of that product.Create New Product Page: This allows one to create and add a new product to their Inventory.Shop Appearance: Gives access to Shop Interface Edit Page, Shop Details Page, Shop Colors Page, Shop Filters Page.Shop Details Page: This allows one to set their Shop\'s banner image, logo image, shop name, and shop contact number. Select the \"save changes\" button below to save changes made.Shop Interface Edit Page: This page allows one to edit and manage the various sections of their shop\'s home page.Shop Colors Page: This page allows one to change their shop\'s Theme Colors.Shop Filters Page: This page allows one to create Filters for their shops."""},
->>>>>>> Stashed changes
+
           },
           "required":["page"],
     }
   },
   
-<<<<<<< Updated upstream
-  {
-    "name":"changeTheme",
-    "description":"""change the theme colors of the shop or app based on: The Primary Color is used as the default background color for all sections in the Shop.
-    The Secondary Color is used as the background color for the sticker on top of carousel products to show discounts. 
-    Secondary 2 is used for show the discount percentage of prices of products, Active Navigation Icon in Bottom navigation Bar.
-    The Accent Color is used for Call-To-Action buttons like the active state of the wishlist icon, "Add to Cart" button, and "Confirm Order" Button.
-    The Neutral Color is used to for inactive Icons in the Navigation bar, prices before discounts, dividers, etc.
-    The Text Color is used for the default text colors of titles of sections and since sections have a default background color of Primary Color, it should be in contrast with the primary color for easier readability.""",
-    "parameters":{
-            "type": "object",
-            "properties":{
-                "new_color":{
-                    "type":"string",
-                    "description":"corresponding color in rgb format, eg. for white is (255,255,255)"
-                }
-            }
-        },
-        "required":["new_color"]
-    },
-=======
    {
     "name":"changeTheme",
     "description":"""change the theme colors of the shop or app based on: The Primary Color is used as the default background color for all sections in the Shop.
@@ -143,7 +137,6 @@ The Text Color is used for the default text colors of titles of sections and sin
     },
     "required":["new_color","theme_key"]
 },
->>>>>>> Stashed changes
 
   {
         "name":"modify_section",
@@ -164,6 +157,9 @@ The Text Color is used for the default text colors of titles of sections and sin
         },
         "required":["section_preset","section_index"]
     },
+
+    {'name': 'makeShop', 'description': 'function to make a shop from start', 'parameters': {'type': 'object', 'properties': {'shopName': {'type': 'string', 'description': 'name of the shop'}, 'shopCat': {'type': 'string', 'description': 'type of products sold by the shop', 'enum': ['Fashion', 'Food']}, 's1': {'type': 'string', 'description': "first section of the Shop app's UI design, coming underneath the appBar or header.", 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's2': {'type': 'string', 'description': 'same as s1, but comes under s1', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's3': {'type': 'string', 'description': 'same as s2, but comes under s2', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's4': {'type': 'string', 'description': 'same as s3 but comes under s3', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 'primaryColor': {'type': 'string', 'description': 'primary color of the shop which serves as the default background color. should be in RGB format eg. white = 255,255,255'}, 'secondaryColor': {'type': 'string', 'description': 'secondary color of the shop app, should come in same format as primary color'}, 'secondary2': {'type': 'string', 'description': 'same format as primary color. serves as the color of Call to Actions and promo numbers on carousel products'}, 'accentColor': {'type': 'string', 'description': 'accent color of the shop. same format as primary color. serves as color of discount prices.'}, 'textColor': {'type': 'string', 'description': 'color of text which should contrast the primary color. should come in same format as primary color'}, 'neutralColor': {'type': 'string', 'description': 'same format as all the other colors. serves as color of inactive buttons or neutral elements like dividers etc.'}}}}
+
     ]
 
     response = openai.ChatCompletion.create(
@@ -186,6 +182,7 @@ CORS(app)
 @app.route('/aiChat',methods = ['POST','GET'])
 def chat_ai():
     data = request.get_json()
+    # data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
     output = get_ai(data)
     # response = jsonify({'response':output})
     print(output)

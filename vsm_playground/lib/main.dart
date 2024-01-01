@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:vsm_playground/Coder/code.dart';
->>>>>>> Stashed changes
 import 'package:vsm_playground/ImageSectionTesting/wrapper.dart';
 import 'package:vsm_playground/SAP%20Onbaording/CategorySelection.dart';
 import 'package:vsm_playground/SAP%20Onbaording/OnBoardingWrapper.dart';
@@ -38,11 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-<<<<<<< Updated upstream
-      home: const ImageWrapper(),
-=======
       home: const CodeView(),
->>>>>>> Stashed changes
     );
   }
 }
