@@ -5,6 +5,9 @@ import replicate
 from flask_cors import CORS
 import openai
 
+openai.api_key = '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'
+
+
 #Utility Functions
 def navFunc(json_data):
         # Parse the JSON data to extract the 'page' value
@@ -157,8 +160,7 @@ The Text Color is used for the default text colors of titles of sections and sin
         "required":["section_preset","section_index"]
     },
 
-    {'name': 'makeShop', 'description': 'function to make a shop from start', 'parameters': {'type': 'object', 'properties': {'shopName': {'type': 'string', 'description': 'name of the shop'}, 'shopCat': {'type': 'string', 'description': 'type of products sold by the shop', 'enum': ['Fashion', 'Food']}, 's1': {'type': 'string', 'description': "first section of the Shop app's UI design, coming underneath the appBar or header.", 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's2': {'type': 'string', 'description': 'same as s1, but comes under s1', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's3': {'type': 'string', 'description': 'same as s2, but comes under s2', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's4': {'type': 'string', 'description': 'same as s3 but comes under s3', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 'primaryColor': {'type': 'string', 'description': 'primary color of the shop which serves as the default background color. should be in RGB format eg. white = 255,255,255'}, 'secondaryColor': {'type': 'string', 'description': 'secondary color of the shop app, should come in same format as primary color'}, 'secondary2': {'type': 'string', 'description': 'same format as primary color. serves as the color of Call to Actions and promo numbers on carousel products'}, 'accentColor': {'type': 'string', 'description': 'accent color of the shop. same format as primary color. serves as color of discount prices.'}, 'textColor': {'type': 'string', 'description': 'color of text which should contrast the primary color. should come in same format as primary color'}, 'neutralColor': {'type': 'string', 'description': 'same format as all the other colors. serves as color of inactive buttons or neutral elements like dividers etc.'}}}}
-
+    
     ]
 
     response = openai.ChatCompletion.create(
@@ -171,6 +173,18 @@ The Text Color is used for the default text colors of titles of sections and sin
     print(response)
     return response_message
 
+def get_ai_shop(user_prompt):
+    functions = [{'name': 'makeShop', 'description': 'function to make a shop from start', 'parameters': {'type': 'object', 'properties': {'shopName': {'type': 'string', 'description': 'name of the shop'}, 'shopCat': {'type': 'string', 'description': 'type of products sold by the shop', 'enum': ['Fashion', 'Food']}, 's1': {'type': 'string', 'description': "first section of the Shop app's UI design, coming underneath the appBar or header.", 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's2': {'type': 'string', 'description': 'same as s1, but comes under s1', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's3': {'type': 'string', 'description': 'same as s2, but comes under s2', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 's4': {'type': 'string', 'description': 'same as s3 but comes under s3', 'enum': ['Carousel', 'Grid', 'HorizontalView']}, 'primaryColor': {'type': 'string', 'description': 'primary color of the shop which serves as the default background color. should be in RGB format eg. white = 255,255,255'}, 'secondaryColor': {'type': 'string', 'description': 'secondary color of the shop app, should come in same format as primary color'}, 'secondary2': {'type': 'string', 'description': 'same format as primary color. serves as the color of Call to Actions and promo numbers on carousel products'}, 'accentColor': {'type': 'string', 'description': 'accent color of the shop. same format as primary color. serves as color of discount prices.'}, 'textColor': {'type': 'string', 'description': 'color of text which should contrast the primary color. should come in same format as primary color'}, 'neutralColor': {'type': 'string', 'description': 'same format as all the other colors. serves as color of inactive buttons or neutral elements like dividers etc.'}}}}
+]
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-0613",
+        messages = [{"role":"system","content":"You are a mobile app assistant chat bot"},{"role": "user", "content": user_prompt}],
+        functions=functions,
+        function_call="auto",  # auto is default, but we'll be explicit
+    )
+    response_message = parseAIResponse(response["choices"][0]["message"])
+    print(response)
+    return response_message
 
 # Create the Flask app
 app = Flask(__name__)
@@ -187,6 +201,14 @@ def chat_ai():
     print(output)
     return output,201
 
+@app.route('/aiShop',methods = ['POST','GET'])
+def createShop_ai():
+      # data = request.get_json()
+    data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
+    output = get_ai_shop(data)
+    # response = jsonify({'response':output})
+    print(output)
+    return output,201
 
 
 if __name__ == '__main__':
