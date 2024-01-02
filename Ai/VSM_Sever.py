@@ -5,7 +5,6 @@ import replicate
 from flask_cors import CORS
 import openai
 
-openai.api_key = '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'
 #Utility Functions
 def navFunc(json_data):
         # Parse the JSON data to extract the 'page' value
@@ -60,7 +59,7 @@ def makeShopFunc(json_data):
         val = f"{shopName},{shopCat},{s1},{s2},{s3},{s4},{primaryColor},{secondaryColor},{accentColor},{neutralColor},{textColor}"
 
 
-        message = f"Shop Name: {shopName},Category: {shopCat},s1: {s1},s2: {s2},s3: {s3},s4: {s4},primary: {primaryColor},secondary: {secondaryColor},secondary2: {secondary2Color},accent: {accentColor},neutral: {neutralColor},text Color: {textColor},"
+        message = f"'Shop Name': '{shopName}','Category': '{shopCat}','s1': '{s1}','s2': '{s2}','s3': '{s3}','s4': '{s4}','primary': '{primaryColor}','secondary': '{secondaryColor}','secondary2': '{secondary2Color}','accent': '{accentColor}','neutral': '{neutralColor}','text Color':'{textColor}',"
         
 
         return message
