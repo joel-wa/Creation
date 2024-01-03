@@ -8,8 +8,8 @@ import openai
 import replicate
 import os
 
-# openai.api_key = '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'
-# os.environ["REPLICATE_API_TOKEN"] = "r8_WYxUzEqqzbgVUgaPcBI1XIIOBcuGseA1wakWQ" 
+openai.api_key = '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'
+os.environ["REPLICATE_API_TOKEN"] = "r8_WYxUzEqqzbgVUgaPcBI1XIIOBcuGseA1wakWQ" 
 
 
 #General util
@@ -308,9 +308,9 @@ def createShop_ai():
     return output,201
 
 
-@app.route('/aiImage/<prompt>',methods = ['POST','GET'])
-def generateImage(prompt):
-    # data = request.get_json()
+@app.route('/aiImage',methods = ['POST','GET'])
+def generateImage():
+    prompt = request.get_json()
     cat = imagePromptCat(prompt,cached_categories)
     # if(extract_second_part(cat) is not None):
     #     cat = extract_second_part(cat)
