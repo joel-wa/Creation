@@ -1,11 +1,36 @@
 import json
 import re
 from flask import Flask, request, jsonify
+from flask_caching import Cache
 import replicate
 from flask_cors import CORS
 import openai
+import replicate
+import os
 
-openai.api_key = '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'
+# openai.api_key = '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'
+# os.environ["REPLICATE_API_TOKEN"] = "r8_WYxUzEqqzbgVUgaPcBI1XIIOBcuGseA1wakWQ" 
+
+
+#General util
+
+def save_list_to_file(data_list, file_path):
+    try:
+        with open(file_path, 'a+') as file:
+            json.dump(data_list, file)
+        print(f"Data saved to {file_path} successfully.")
+    except Exception as e:
+        print(f"Error saving data to {file_path}: {e}")
+
+def load_list_from_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            data_list = json.load(file)
+        print(f"Data loaded from {file_path} successfully.")
+        return data_list
+    except Exception as e:
+        print(f"Error loading data from {file_path}: {e}")
+        return None
 
 
 #Utility Functions
@@ -186,8 +211,80 @@ def get_ai_shop(user_prompt):
     print(response)
     return response_message
 
+
+def requestImage(prompt):
+    # return "template image"
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-0613",
+        messages = [{"role":"system","content":"return a simple text prompt to generate an e-commerce product image from a model based on the user prompt, eg. from an anime themed shop, an anime t-shirt product. from a toy store, a toy product. Only request for images that users can see a buy in an app"},{"role": "user", "content": prompt}],
+    )
+    response_message = response["choices"][0]["message"]
+    response_value = response_message["content"]
+    print(response_value)
+
+
+    output = replicate.run(
+        "adirik/realvisxl-v3.0-turbo:6e941e7fe46955afc031f35e84312a792d546b0f434f9008d457eb9deb24575c",
+        input={"prompt": response_value,"num_outputs":1},
+    )
+    return output
+
+def imagePromptCat(prompt,cached_cat):
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo-0613",
+        messages = [{"role":"system","content":"You are a ceteogry picker"},{"role": "user", "content": prompt}],
+        functions = [{'name': 'categoryClassifier', 'description': 'chooses a category based on the prompt given', 'parameters': {'type': 'object', 'properties': {'category': {'type': 'string', 'description': 'the closest match category of the prompt', 'enum': ['Fashion', 'Anime', 'Food', 'Restaurant', 'Electronics' ]}}}}],
+        function_call = {"name": "categoryClassifier"}
+    )
+    response_message = response["choices"][0]["message"]
+    response_value = extract_category(response_message["function_call"]["arguments"])
+    print(response_value)
+    return response_value
+
+
+def extract_category(json_string):
+    try:
+        # Load the JSON-like string
+        data = json.loads(json_string)
+
+        # Extract the value associated with the "category" key
+        category_value = data.get("category")
+
+        return category_value
+    except json.JSONDecodeError:
+        # Handle the case where the input string is not valid JSON
+        return None
+
+def extract_second_part(input_string):
+    pattern = r'^None:(.+)$'
+    match = re.match(pattern, input_string)
+
+    if match:
+        return match.group(1)
+    else:
+        return None
+
+
 # Create the Flask app
 app = Flask(__name__)
+
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
+cached_categories = ['Fashion','Anime','Food','Toys']
+
+
+def checkCache(category):
+    cached_image = cache.get(category)
+
+    if cached_image is not None:
+        # If cached, use the cached image
+        return cached_image
+    
+    return None
+
+def cacheImage(category,image):
+    cache.set(category,image)
+    save_list_to_file(cache,'cache')
+    return None
 
 CORS(app)
 
@@ -203,11 +300,32 @@ def chat_ai():
 
 @app.route('/aiShop',methods = ['POST','GET'])
 def createShop_ai():
-      # data = request.get_json()
-    data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
+    data = request.get_json()
+    # data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
     output = get_ai_shop(data)
     # response = jsonify({'response':output})
     print(output)
+    return output,201
+
+
+@app.route('/aiImage/<prompt>',methods = ['POST','GET'])
+def generateImage(prompt):
+    # data = request.get_json()
+    cat = imagePromptCat(prompt,cached_categories)
+    # if(extract_second_part(cat) is not None):
+    #     cat = extract_second_part(cat)
+    #     cached_categories.append(cat)
+
+    ### Caching System
+    cache_result = checkCache(cat)
+    if cache_result is not None:
+        print(f'Image cat has been cached under {cat}')
+        return cache_result
+    
+    output = requestImage(prompt)
+    cacheImage(cat,output)
+    print(cached_categories)
+
     return output,201
 
 

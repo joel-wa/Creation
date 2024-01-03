@@ -1,0 +1,2 @@
+name,description,parameters
+categoryClassifier,chooses a category based on the prompt given,"{'type': 'object', 'properties': {'category': {'type': 'string', 'description': 'the category of the prompt', 'enum': ['Fashion', 'Anime', 'Food', 'Restaurant', 'Electronics', 'None']}}}"
