@@ -311,19 +311,19 @@ def createShop_ai():
 @app.route('/aiImage',methods = ['POST','GET'])
 def generateImage():
     prompt = request.get_json()
-    category = imagePromptCat(prompt,cached_categories)
+    cat = imagePromptCat(prompt,cached_categories)
     # if(extract_second_part(cat) is not None):
     #     cat = extract_second_part(cat)
     #     cached_categories.append(cat)
 
     ### Caching System
-    cache_result = checkCache(category)
+    cache_result = checkCache(cat)
     if cache_result is not None:
-        print(f'Image cat has been cached under {category}')
-        return cache_result,201
+        print(f'Image cat has been cached under {cat}')
+        return cache_result
 
     output = requestImage(prompt)
-    cacheImage(category,output)
+    cacheImage(cat,output)
     print(cached_categories)
 
     return output,201

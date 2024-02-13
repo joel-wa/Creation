@@ -1,0 +1,2 @@
+name,description,parameters
+evalAnswer,function to evaluate the answer given by a student to a question.,"{'type': 'object', 'properties': {'feedback': {'type': 'string', 'description': 'feedback and explanation of why the given answer is right or wrong and how the student can improve.'}, 'goodAnswer': {'type': 'string', 'description': 'if the answer was right then True else the value is False', 'enum': ['True', 'False']}}}"
