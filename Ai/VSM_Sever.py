@@ -8,8 +8,8 @@ import openai
 import replicate
 import os
 
-openai.api_key = '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'
-os.environ["REPLICATE_API_TOKEN"] = "r8_WYxUzEqqzbgVUgaPcBI1XIIOBcuGseA1wakWQ"
+openai.api_key = ''
+os.environ["REPLICATE_API_TOKEN"] = ""
 
 
 #General util
@@ -291,8 +291,10 @@ CORS(app)
 
 @app.route('/aiChat',methods = ['POST','GET'])
 def chat_ai():
-    data = request.get_json()
-    # data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
+    if(request.method == "POST"):
+        data = request.get_json()
+    else:
+        data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
     output = get_ai(data)
     # response = jsonify({'response':output})
     print(output)
@@ -300,8 +302,10 @@ def chat_ai():
 
 @app.route('/aiShop',methods = ['POST','GET'])
 def createShop_ai():
-    data = request.get_json()
-    # data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
+    if(request.method == "GET"):
+        data = 'I want an app to sell clothes, name it Joey and let it be classic like zara'
+    else:
+        data = request.get_json()
     output = get_ai_shop(data)
     # response = jsonify({'response':output})
     print(output)
