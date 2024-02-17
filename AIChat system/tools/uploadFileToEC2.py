@@ -8,7 +8,7 @@ def upload_to_ec2(pem_location, instance_user, local_file_path, ec2_instance_id,
 pem_location = r"C:\Users\RanVic\Downloads\VSM_Flask_AI.pem"
 instance_user = "ec2-user"
 local_file_path = r"C:\Users\RanVic\OneDrive\Documents\GitHub\Creation\Ai\VSM_Sever.py"
-ec2_instance_id = "ec2-3-135-226-147.us-east-2.compute.amazonaws.com"
+ec2_instance_id = "ec2-3-134-109-41.us-east-2.compute.amazonaws.com"
 destination_path = "Desktop"
 
 upload_to_ec2(pem_location, instance_user, local_file_path, ec2_instance_id, destination_path)
