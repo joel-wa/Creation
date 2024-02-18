@@ -288,6 +288,10 @@ def cacheImage(category,image):
 
 CORS(app)
 
+@app.route("/",methods = ['POST','GET'])
+def test():
+    return "Hello",201
+
 
 @app.route('/aiChat',methods = ['POST','GET'])
 def chat_ai():
