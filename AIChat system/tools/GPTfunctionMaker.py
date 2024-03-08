@@ -45,11 +45,11 @@ def save_to_csv(schema_list, csv_filename):
         writer = csv.writer(file)
         
         # Write header
-        writer.writerow(["name", "description", "parameters"])
+        writer.writerow(["name", "description", "parameters", "required"])
         
         # Write data
         for schema in schema_list:
-            writer.writerow([schema["name"], schema["description"], schema["parameters"]])
+            writer.writerow([schema["name"], schema["description"], schema["parameters"], schema["required"]])
 
 # Example usage
 schema_list = []

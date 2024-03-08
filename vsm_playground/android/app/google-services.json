@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878188669465",
+    "project_id": "signin-cc88d",
+    "storage_bucket": "signin-cc88d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878188669465:android:031d1e8836d1371fec9888",
+        "android_client_info": {
+          "package_name": "com.example.vsm_playground"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzKBQ27I5TJmQel23tKtAPYLDOi6PpVp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

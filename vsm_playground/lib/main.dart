@@ -1,10 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:vsm_playground/Coder/code.dart';
 import 'package:vsm_playground/ImageSectionTesting/wrapper.dart';
 import 'package:vsm_playground/SAP%20Onbaording/CategorySelection.dart';
 import 'package:vsm_playground/SAP%20Onbaording/OnBoardingWrapper.dart';
+import 'package:vsm_playground/SocialHome/socialHome.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -35,7 +43,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CodeView(),
+      home: const SocialHomePage(),
     );
   }
 }
