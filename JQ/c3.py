@@ -2,7 +2,8 @@ def pokemon_in_continent(pokemon_data, target_continent):
     pokemon_on_continent = []
 
     for pokemon_name, pokemon_info in pokemon_data.items():
-        continents = pokemon_info.get('continents', [])
+        # continents = pokemon_info.get('continents', [])  old vs new below
+        continents = pokemon_info.get('locations', [])
 
         #adding condition to add only matching pokemons
         if target_continent in continents:
